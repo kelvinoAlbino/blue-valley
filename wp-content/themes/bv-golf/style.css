@@ -5821,6 +5821,9 @@ button.close {
 @media print {
   .hidden-print {
     display: none !important; } }
+a {
+  color: #33B8FF; }
+
 header nav#top-menu-nav ul li a:hover {
   color: #33B8FF;
   background-color: transparent; }
@@ -5832,5 +5835,8 @@ footer #footer-bottom {
     text-align: center; }
     footer #footer-bottom .container a {
       color: #33B8FF; }
+
+#sidebar .et_pb_widget ul li a {
+  color: #33B8FF; }
 
 
