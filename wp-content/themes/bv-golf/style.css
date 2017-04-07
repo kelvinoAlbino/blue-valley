@@ -8009,7 +8009,7 @@ button.close {
   .hidden-print {
     display: none !important; } }
 a {
-  color: green; }
+  color: #33b8ff; }
 
 #top-header ul {
   float: left; }
@@ -8027,7 +8027,7 @@ a {
       font-size: 14px; }
 
 header nav#top-menu-nav ul li a:hover {
-  color: green;
+  color: #33b8ff;
   background-color: transparent; }
 
 footer #footer-bottom {
@@ -8036,9 +8036,9 @@ footer #footer-bottom {
   footer #footer-bottom .container {
     text-align: center; }
     footer #footer-bottom .container a {
-      color: green; }
+      color: #33b8ff; }
 
 #sidebar .et_pb_widget ul li a {
-  color: green; }
+  color: #33b8ff; }
 
 
