@@ -1,0 +1,29 @@
+#top-header {
+  ul { 
+    float: left;
+    
+    &.logins {
+      float: right;
+    }
+
+    li {
+      display: inline;
+
+      &:after {
+        content: "|";
+        margin: 0 10px;
+      }
+
+      &:last-child {
+        &:after {
+          content: " ";
+          margin: 0;
+        }
+      }
+
+      a {
+        font-size: 14px;
+      }
+    }
+  }
+}

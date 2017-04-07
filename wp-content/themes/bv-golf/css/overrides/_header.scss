@@ -1,0 +1,16 @@
+header {
+  nav {
+    &#top-menu-nav{
+      ul {
+        li {
+          a {
+            &:hover {
+              color: $bvg-blue;
+              background-color: transparent;
+            }
+          }
+        }
+      }
+    }
+  }
+}
