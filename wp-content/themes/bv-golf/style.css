@@ -8055,11 +8055,33 @@ header nav#top-menu-nav ul li a:hover {
 h1, h2, h3, h4, h5, h6 {
   color: #33b8ff; }
 
+a {
+  color: #33b8ff; }
+
+strong {
+  color: #33b8ff; }
+
+ul.contact-us li {
+  padding: 0 0 10px; }
+  ul.contact-us li:last-child {
+    padding: 0; }
+ul.social-icons {
+  text-align: center; }
+  ul.social-icons li {
+    padding-right: 10px;
+    display: inline-block; }
+    ul.social-icons li:last-child {
+      padding-right: 0; }
+    ul.social-icons li i {
+      font-size: 26px; }
+
 footer#main-footer {
   color: #fff; }
   footer#main-footer h3 {
     text-align: center;
     color: #33b8ff; }
+footer .footer-content {
+  padding: 0 0 15px; }
 footer #footer-bottom {
   color: #fff;
   text-align: center; }
