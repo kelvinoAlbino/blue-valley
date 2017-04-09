@@ -17,9 +17,9 @@ if ( ! is_page_template( 'page-template-blank.php' ) ) : ?>
 					<div class="col-sm-3">
 						<h3>Opening Hours</h3>
 							<ul class="open-hours">
-								<li><strong>Monday - Friday:</strong> 6am - 7pm</li>
-								<li><strong>Weekends:</strong> 7am - 6pm</li>
-								<li><strong>Public Holidays:</strong> 7am - 5pm</li>
+								<li><i class="fa fa-clock-o" aria-hidden="true"></i> <strong>Monday - Friday:</strong> 6am - 7pm</li>
+								<li><i class="fa fa-clock-o" aria-hidden="true"></i> <strong>Weekends:</strong> 7am - 6pm</li>
+								<li><i class="fa fa-clock-o" aria-hidden="true"></i> <strong>Public Holidays:</strong> 7am - 5pm</li>
 							</ul>
 					</div>
 					<div class="col-sm-3">
