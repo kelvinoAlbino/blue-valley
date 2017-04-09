@@ -1,4 +1,12 @@
 footer {
+  &#main-footer {
+    color: #fff;
+
+    h3 {
+      text-align: center;
+      color: $bvg-blue;
+    }
+  }
   #footer-bottom {
     color: #fff;
     text-align: center;

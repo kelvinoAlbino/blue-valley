@@ -8011,6 +8011,17 @@ button.close {
 a {
   color: #33b8ff; }
 
+table#events-table {
+  color: gray; }
+  table#events-table thead tr th {
+    color: gray; }
+  table#events-table tr td {
+    padding: 15px; }
+    table#events-table tr td p {
+      margin: 0; }
+      table#events-table tr td p i {
+        font-size: 26px; }
+
 .spotlight .spotlight-item {
   padding: 10px;
   border-radius: 3px;
@@ -8044,6 +8055,11 @@ header nav#top-menu-nav ul li a:hover {
 h1, h2, h3, h4, h5, h6 {
   color: #33b8ff; }
 
+footer#main-footer {
+  color: #fff; }
+  footer#main-footer h3 {
+    text-align: center;
+    color: #33b8ff; }
 footer #footer-bottom {
   color: #fff;
   text-align: center; }

@@ -7,27 +7,19 @@
 if ( ! is_page_template( 'page-template-blank.php' ) ) : ?>
 
 			<footer id="main-footer">
-				<?php get_sidebar( 'footer' ); ?>
-
-
-		<?php
-			if ( has_nav_menu( 'footer-menu' ) ) : ?>
-
-				<div id="et-footer-nav">
-					<div class="container">
-						<?php
-							wp_nav_menu( array(
-								'theme_location' => 'footer-menu',
-								'depth'          => '1',
-								'menu_class'     => 'bottom-nav',
-								'container'      => '',
-								'fallback_cb'    => '',
-							) );
-						?>
-					</div>
-				</div> <!-- #et-footer-nav -->
-
-			<?php endif; ?>
+				
+				<div class="col-sm-3">
+					<h3>Heading</h2>
+				</div>
+				<div class="col-sm-3">
+					<h3>Heading</h2>
+				</div>
+				<div class="col-sm-3">
+					<h3>Heading</h2>
+				</div>
+				<div class="col-sm-3">
+					<h3>Heading</h2>
+				</div>
 
 				<div id="footer-bottom">
 					<div class="container clearfix">
