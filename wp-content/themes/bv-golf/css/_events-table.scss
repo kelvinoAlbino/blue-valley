@@ -1,0 +1,25 @@
+table#events-table {
+  color: lighten(#000, 50);
+
+  thead {
+    tr {
+      th {
+        color: lighten(#000, 50);
+      }
+    }
+  }
+
+  tr {
+    td {
+      padding: 15px;
+
+      p {
+        margin: 0;
+
+        i {
+          font-size: 26px;
+        }
+      }
+    }
+  }
+}

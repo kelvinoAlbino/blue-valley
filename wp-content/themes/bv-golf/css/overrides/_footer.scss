@@ -1,4 +1,17 @@
 footer {
+  &#main-footer {
+    color: #fff;
+
+    h3 {
+      text-align: center;
+      color: $bvg-blue;
+    }
+  }
+
+  .footer-content {
+    padding: 0 0 15px;
+  }
+
   #footer-bottom {
     color: #fff;
     text-align: center;
