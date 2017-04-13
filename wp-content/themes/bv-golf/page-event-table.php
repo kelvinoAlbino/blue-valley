@@ -9,7 +9,8 @@
  * @subpackage bv-golf
  */
 get_header();
-?>
+
+?> 
 
 <div id="primary" class="site-content container">
     <div id="content" role="main">
@@ -53,8 +54,8 @@ get_header();
                         <thead>
                             <tr>
                                 <th></th>
-                                <th>Date</th>
                                 <th>Title</th>
+                                <th>Date</th>
                                 <!--<th>Category</th>-->
                                 <th>Venue</th>
                             </tr>
@@ -65,18 +66,21 @@ get_header();
                             if ($the_query->have_posts()) {
                                 while ($the_query->have_posts()) {
                                     $the_query->the_post();
-
+                                    $postLink = get_permalink( $post->ID );
                                     $postId = $post->ID;
 
                                     echo '<tr>';
 
-                                    echo "<td>";
-                                    echo '<p class="text-center"><i class="fa fa-calendar-o" aria-hidden="true"></i></p>';
+                                    echo '<td>';
+                                    am_the_startdate ('<p>d</p>', '<a href="' . $postLink . '"><i class="fa fa-calendar-o" aria-hidden="true"></i></a>');
+
+                                    //echo '<p class="text-center"><i class="fa fa-calendar-o" aria-hidden="true"></i></p>';
+
+                                    the_title('<td><h4><a href="' . $postLink . '">', '</a></h4></td>');
+
                                     echo "</td>";
                                     am_the_startdate('Y-m-d H:i', '<td>', '');
                                     am_the_enddate('Y-m-d H:i', ' - ', '</td>');
-
-                                    the_title('<td>', '</td>');
 
                                     //echo '<td>' . am_get_the_event_category_list(',', 'multiple') . '</td>';
 
@@ -105,5 +109,4 @@ get_header();
     </div><!-- #content -->
 </div><!-- #primary -->
 
-<?php get_sidebar(); ?>
 <?php get_footer(); ?>
