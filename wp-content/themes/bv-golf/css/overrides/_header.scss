@@ -14,3 +14,7 @@ header {
     }
   }
 }
+
+#top-menu .menu-item-has-children > a:first-child:after, #et-secondary-nav .menu-item-has-children > a:first-child:after {
+  top: 10px;
+}
