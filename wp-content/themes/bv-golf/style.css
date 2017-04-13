@@ -8033,10 +8033,10 @@ table#events-table {
 
 #top-header {
   background-color: #33b8ff; }
+  #top-header .top-container {
+    padding: 10px 0 0; }
   #top-header ul {
-    float: left; }
-    #top-header ul.logins {
-      float: right; }
+    text-align: center; }
     #top-header ul li {
       display: inline; }
       #top-header ul li:after {
@@ -8048,9 +8048,17 @@ table#events-table {
       #top-header ul li a {
         font-size: 14px; }
 
+@media (min-width: 768px) {
+  #top-header ul {
+    float: left; }
+    #top-header ul.logins {
+      float: right; } }
 header nav#top-menu-nav ul li a:hover {
   color: #33b8ff;
   background-color: transparent; }
+
+#top-menu .menu-item-has-children > a:first-child:after, #et-secondary-nav .menu-item-has-children > a:first-child:after {
+  top: 10px; }
 
 h1, h2, h3, h4, h5, h6 {
   color: #33b8ff; }
@@ -8074,6 +8082,29 @@ ul.social-icons {
       padding-right: 0; }
     ul.social-icons li i {
       font-size: 26px; }
+
+.slanted:before {
+  content: "";
+  position: absolute;
+  bottom: -90%;
+  width: 100%;
+  height: 250px;
+  background-color: #fff;
+  -webkit-transform: rotate(-8deg) scale(2);
+  -ms-transform: rotate(-8deg) scale(2);
+  transform: rotate(-8deg) scale(2);
+  z-index: 9999; }
+.slanted:after {
+  content: "";
+  position: absolute;
+  bottom: -90%;
+  width: 100%;
+  height: 250px;
+  background-color: #fff;
+  -webkit-transform: rotate(8deg) scale(2);
+  -ms-transform: rotate(8deg) scale(2);
+  transform: rotate(8deg) scale(2);
+  z-index: 9999; }
 
 footer#main-footer {
   color: #fff; }

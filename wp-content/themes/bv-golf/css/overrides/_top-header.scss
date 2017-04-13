@@ -1,12 +1,12 @@
 #top-header {
   background-color: $bvg-blue;
   
+  .top-container {
+    padding: 10px 0 0;
+  }
+
   ul { 
-    float: left;
-    
-    &.logins {
-      float: right;
-    }
+    text-align: center;
 
     li {
       display: inline;
@@ -25,6 +25,18 @@
 
       a {
         font-size: 14px;
+      }
+    }
+  }
+}
+
+@media (min-width: $screen-sm) {
+  #top-header {
+    ul {
+      float: left;
+
+      &.logins {
+        float: right;
       }
     }
   }
