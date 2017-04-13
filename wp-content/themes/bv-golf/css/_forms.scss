@@ -1,0 +1,37 @@
+#forms{
+  form {
+    font-weight: 500;
+    
+    p {
+      display: inline-block;
+      margin: 0;
+      width: 100%;
+
+      label {
+        width: 100%;
+        font-weight: 500;
+
+        input, textarea {
+          width: 100%;
+          padding: 6px 8px;
+          border-radius: 3px;
+        }
+      }
+
+      input[type="submit"] {
+        border: none;
+        border-radius: 3px;
+        background-color: $bvg-blue;
+        color: #fff;    
+        padding: 6px 12px;
+        font-size: 14px;
+        line-height: 1.42857;
+        border-radius: 4px;
+
+        &:hover {
+          background-color: darken($bvg-blue, 10);
+        }
+      }
+    }
+  }
+}
