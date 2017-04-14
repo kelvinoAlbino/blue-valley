@@ -8011,6 +8011,51 @@ button.close {
 a {
   color: #33b8ff; }
 
+#forms form {
+  font-weight: 500; }
+  #forms form p, #forms form div {
+    display: inline-block;
+    margin: 0;
+    width: 100%; }
+    #forms form p label, #forms form div label {
+      width: 100%;
+      font-weight: 500; }
+      #forms form p label input, #forms form p label textarea, #forms form div label input, #forms form div label textarea {
+        width: 100%;
+        padding: 6px 8px;
+        border-radius: 3px; }
+    #forms form p input[type="text"], #forms form p input[type="email"], #forms form p input[type="password"], #forms form div input[type="text"], #forms form div input[type="email"], #forms form div input[type="password"] {
+      width: 100%;
+      padding: 6px 8px;
+      border-radius: 3px;
+      margin: 0 0 20px; }
+      #forms form p input[type="text"]:last-child, #forms form p input[type="email"]:last-child, #forms form p input[type="password"]:last-child, #forms form div input[type="text"]:last-child, #forms form div input[type="email"]:last-child, #forms form div input[type="password"]:last-child {
+        margin: 0; }
+    #forms form p input[type="checkbox"], #forms form div input[type="checkbox"] {
+      margin: 0; }
+    #forms form p input[type="submit"], #forms form div input[type="submit"] {
+      border: none;
+      border-radius: 3px;
+      background-color: #33b8ff;
+      color: #fff;
+      padding: 6px 12px;
+      font-size: 14px;
+      line-height: 1.42857;
+      border-radius: 4px;
+      max-width: 140px;
+      display: inline-block;
+      margin-bottom: 20px; }
+      #forms form p input[type="submit"]:hover, #forms form div input[type="submit"]:hover {
+        background-color: #00a6ff; }
+
+.membership-form {
+  width: 320px;
+  padding: 15px 20px 0;
+  margin: 0 auto 20px;
+  border-radius: 5px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.25);
+  background-color: rgba(0, 0, 0, 0.025); }
+
 table#events-table {
   color: gray; }
   table#events-table thead tr th {
@@ -8079,8 +8124,16 @@ header nav#top-menu-nav ul li a:hover {
   color: #33b8ff;
   background-color: transparent; }
 
+#top-menu .menu-item-has-children > a:first-child {
+  padding-right: 0; }
+
 #top-menu .menu-item-has-children > a:first-child:after, #et-secondary-nav .menu-item-has-children > a:first-child:after {
-  top: 10px; }
+  content: "7";
+  top: 10px;
+  left: 0; }
+
+body {
+  color: #666666; }
 
 h1, h2, h3, h4, h5, h6 {
   color: #33b8ff; }
@@ -8104,6 +8157,17 @@ ul.social-icons {
       padding-right: 0; }
     ul.social-icons li i {
       font-size: 26px; }
+
+.call-out {
+  padding: 20px 40px;
+  background-color: #eee;
+  border-radius: 10px;
+  text-align: center; }
+  .call-out p {
+    font-size: 18px;
+    margin: 0; }
+    .call-out p:last-of-type {
+      margin: 0 0 25px; }
 
 @media (min-width: 768px) {
   .slanted {
@@ -8130,16 +8194,8 @@ ul.social-icons {
       -ms-transform: rotate(3deg) scale(2);
       transform: rotate(3deg) scale(2);
       z-index: 9999; } }
-.call-out {
-  padding: 20px 40px;
-  background-color: #eee;
-  border-radius: 10px;
-  text-align: center; }
-  .call-out p {
-    font-size: 18px;
-    margin: 0; }
-    .call-out p:last-of-type {
-      margin: 0 0 25px; }
+#main-content .container {
+  padding-top: 0px; }
 
 footer#main-footer {
   color: #fff; }
@@ -8156,7 +8212,22 @@ footer #footer-bottom {
     footer #footer-bottom .container a {
       color: #33b8ff; }
 
-#sidebar .et_pb_widget ul li a {
-  color: #33b8ff; }
+#sidebar {
+  margin-top: 20px; }
+  #sidebar h4 {
+    border-top: 1px solid #eee;
+    border-bottom: 1px solid #eee;
+    padding-top: 10px; }
+  #sidebar .et_pb_widget ul li {
+    background-color: #eee;
+    padding: 3px 12px !important;
+    border-radius: 3px;
+    margin: 0 0 10px; }
+    #sidebar .et_pb_widget ul li:hover {
+      background-color: #ddd; }
+    #sidebar .et_pb_widget ul li:last-child {
+      margin: 0; }
+    #sidebar .et_pb_widget ul li a {
+      color: #33b8ff; }
 
 

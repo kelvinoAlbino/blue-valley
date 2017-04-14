@@ -1,3 +1,7 @@
+body {
+  color: lighten(#000, 40);
+}
+
 h1, h2, h3, h4, h5, h6 {
   color: $bvg-blue;
 }
@@ -39,6 +43,22 @@ ul {
   }
 }
 
+.call-out {
+  padding: 20px 40px;
+  background-color: #eee;
+  border-radius: 10px;
+  text-align: center;
+
+  p {
+    font-size: 18px;
+    margin: 0;
+
+    &:last-of-type {
+      margin: 0 0 25px;
+    }
+  }
+}
+
 @media (min-width: $screen-sm) {
 
   .slanted {
@@ -68,18 +88,8 @@ ul {
   }
 }
 
-.call-out {
-  padding: 20px 40px;
-  background-color: #eee;
-  border-radius: 10px;
-  text-align: center;
-
-  p {
-    font-size: 18px;
-    margin: 0;
-
-    &:last-of-type {
-      margin: 0 0 25px;
-    }
+#main-content {
+  .container {
+    padding-top: 0px;
   }
 }

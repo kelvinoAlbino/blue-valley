@@ -1,0 +1,64 @@
+#forms {
+  form {
+    font-weight: 500;
+    
+    p, div {
+      display: inline-block;
+      margin: 0;
+      width: 100%;
+
+      label {
+        width: 100%;
+        font-weight: 500;
+
+        input, textarea {
+          width: 100%;
+          padding: 6px 8px;
+          border-radius: 3px;
+        }
+      }
+
+      input[type="text"], input[type="email"], input[type="password"] {
+        width: 100%;
+        padding: 6px 8px;
+        border-radius: 3px;
+        margin: 0 0 20px;
+
+        &:last-child {
+          margin: 0;
+        }
+      }
+
+      input[type="checkbox"] {
+        margin: 0;
+      }
+
+      input[type="submit"] {
+        border: none;
+        border-radius: 3px;
+        background-color: $bvg-blue;
+        color: #fff;    
+        padding: 6px 12px;
+        font-size: 14px;
+        line-height: 1.42857;
+        border-radius: 4px;
+        max-width: 140px;
+        display: inline-block;
+        margin-bottom: 20px;
+
+        &:hover {
+          background-color: darken($bvg-blue, 10);
+        }
+      }
+    }
+  }
+}
+
+.membership-form {
+  width: 320px;
+  padding: 15px 20px 0;
+  margin: 0 auto 20px;
+  border-radius: 5px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.25);
+  background-color: rgba(0, 0, 0, 0.025);
+}
