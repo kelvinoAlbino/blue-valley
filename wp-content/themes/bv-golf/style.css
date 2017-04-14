@@ -8124,8 +8124,13 @@ header nav#top-menu-nav ul li a:hover {
   color: #33b8ff;
   background-color: transparent; }
 
+#top-menu .menu-item-has-children > a:first-child {
+  padding-right: 0; }
+
 #top-menu .menu-item-has-children > a:first-child:after, #et-secondary-nav .menu-item-has-children > a:first-child:after {
-  top: 10px; }
+  content: "7";
+  top: 10px;
+  left: 0; }
 
 body {
   color: #666666; }
