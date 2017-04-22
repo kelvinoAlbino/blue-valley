@@ -673,7 +673,7 @@ msgid "Add Level"
 msgstr ""
 
 #: classes/class.swpm-membership-levels.php:259
-msgid "Manage Content Production"
+msgid "Manage Content Protection"
 msgstr ""
 
 #: classes/class.swpm-membership-levels.php:260
@@ -1822,4 +1822,14 @@ msgid "State / Province / Region"
 msgstr ""
 
 msgid "Postal / Zip Code"
+msgstr ""
+
+#: Partial protection addon strings
+msgid "You do not have permission to view this content."
+msgstr ""
+
+msgid "Your membership level does not have permission to view this content."
+msgstr ""
+
+msgid "This content is for members only."
 msgstr ""

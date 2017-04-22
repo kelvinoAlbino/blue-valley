@@ -59,6 +59,12 @@ ul {
   }
 }
 
+#main-content {
+  .container {
+    padding-top: 0px;
+  }
+}
+
 @media (min-width: $screen-sm) {
 
   .slanted {
@@ -88,8 +94,14 @@ ul {
   }
 }
 
-#main-content {
-  .container {
-    padding-top: 0px;
+@media (min-width: 981px) {
+  #left-area {
+      width: 70%;
+      padding-bottom: 23px;
+  }
+
+  #sidebar {
+      float: left;
+      width: 30%;
   }
 }

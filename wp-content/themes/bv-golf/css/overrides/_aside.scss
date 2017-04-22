@@ -7,7 +7,7 @@
     padding-top: 10px;
   }
 
-  .et_pb_widget {
+  .et_pb_widget, .et_pb_widget_area {
     ul {
       li {
         background-color: #eee;
@@ -29,4 +29,16 @@
       }
     }
   }    
+}
+
+.textwidget {
+  .call-out {
+    h2 {
+      margin: 0 0 10px;
+    }
+
+    a {
+      color: #fff;
+    }
+  }
 }
