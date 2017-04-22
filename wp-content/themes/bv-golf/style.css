@@ -8013,6 +8013,13 @@ a {
 
 #forms form {
   font-weight: 500; }
+  #forms form table tbody tr td {
+    padding: 0; }
+  #forms form input[type="text"], #forms form input[type="email"], #forms form input[type="password"] {
+    width: 100%;
+    padding: 6px 8px;
+    border-radius: 3px;
+    margin: 0 0 20px; }
   #forms form p, #forms form div {
     display: inline-block;
     margin: 0;
@@ -8048,6 +8055,9 @@ a {
       #forms form p input[type="submit"]:hover, #forms form div input[type="submit"]:hover {
         background-color: #00a6ff; }
 
+.registration-form {
+  margin: 0 auto; }
+
 .membership-form {
   width: 320px;
   padding: 15px 20px 0;
@@ -8056,6 +8066,12 @@ a {
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.25);
   background-color: rgba(0, 0, 0, 0.025); }
 
+@media (min-width: 768px) {
+  .registration-form {
+    width: 60%; }
+
+  #forms form div input[type="submit"] {
+    float: left; } }
 table#events-table {
   color: gray; }
   table#events-table thead tr th {
@@ -8107,6 +8123,20 @@ table#events-table {
     border: 3px solid #fff;
     box-shadow: 0px 0px 5px #aaa;
     max-width: 300px; }
+
+.block-post .column {
+  padding: 10px; }
+  .block-post .column article {
+    border-radius: 3px;
+    box-shadow: 0 0 4px rgba(0, 0, 0, 0.2);
+    border: none; }
+.block-post img {
+  min-width: 90% !important;
+  max-width: 90% !important;
+  border: 3px solid #fff;
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.4);
+  margin: 15px auto;
+  display: block; }
 
 #top-header {
   background-color: #33b8ff; }
@@ -8182,6 +8212,9 @@ ul.social-icons {
 #main-content .container {
   padding-top: 0px; }
 
+#contact ul {
+  list-style: none; }
+
 @media (min-width: 768px) {
   .slanted {
     position: relative; }
@@ -8230,22 +8263,26 @@ footer #footer-bottom {
     footer #footer-bottom .container a {
       color: #33b8ff; }
 
-#sidebar {
+#et-sidebar {
+  width: 100%; }
+
+#sidebar, #et-sidebar {
+  border: none;
   margin-top: 20px; }
-  #sidebar h4 {
+  #sidebar h4, #et-sidebar h4 {
     border-top: 1px solid #eee;
     border-bottom: 1px solid #eee;
     padding-top: 10px; }
-  #sidebar .et_pb_widget ul li, #sidebar .et_pb_widget_area ul li {
+  #sidebar .et_pb_widget ul li, #sidebar .et_pb_widget_area ul li, #et-sidebar .et_pb_widget ul li, #et-sidebar .et_pb_widget_area ul li {
     background-color: #eee;
     padding: 3px 12px !important;
     border-radius: 3px;
     margin: 0 0 10px; }
-    #sidebar .et_pb_widget ul li:hover, #sidebar .et_pb_widget_area ul li:hover {
+    #sidebar .et_pb_widget ul li:hover, #sidebar .et_pb_widget_area ul li:hover, #et-sidebar .et_pb_widget ul li:hover, #et-sidebar .et_pb_widget_area ul li:hover {
       background-color: #ddd; }
-    #sidebar .et_pb_widget ul li:last-child, #sidebar .et_pb_widget_area ul li:last-child {
+    #sidebar .et_pb_widget ul li:last-child, #sidebar .et_pb_widget_area ul li:last-child, #et-sidebar .et_pb_widget ul li:last-child, #et-sidebar .et_pb_widget_area ul li:last-child {
       margin: 0; }
-    #sidebar .et_pb_widget ul li a, #sidebar .et_pb_widget_area ul li a {
+    #sidebar .et_pb_widget ul li a, #sidebar .et_pb_widget_area ul li a, #et-sidebar .et_pb_widget ul li a, #et-sidebar .et_pb_widget_area ul li a {
       color: #33b8ff; }
 
 .textwidget .call-out h2 {

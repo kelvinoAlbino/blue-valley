@@ -1,4 +1,9 @@
-#sidebar {
+#et-sidebar {
+  width: 100%;
+}
+
+#sidebar, #et-sidebar {
+  border: none;
   margin-top: 20px;
 
   h4 {

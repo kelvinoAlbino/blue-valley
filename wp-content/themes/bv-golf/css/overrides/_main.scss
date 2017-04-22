@@ -65,6 +65,17 @@ ul {
   }
 }
 
+#contact {
+  ul {
+    list-style: none;
+
+    li {
+      a {
+      }
+    }
+  }
+}
+
 @media (min-width: $screen-sm) {
 
   .slanted {
