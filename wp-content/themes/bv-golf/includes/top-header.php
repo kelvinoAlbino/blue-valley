@@ -13,10 +13,10 @@
     <div class="col-md-6">
       <ul class="logins">
         <li>
-          <a href="<?php echo site_url(); ?>/membership-login/"><i class="fa fa-lock" aria-hidden="true"></i> Sign in</a>
+          <a href="<?php echo site_url(); ?>/login/"><i class="fa fa-lock" aria-hidden="true"></i> Login</a>
         </li>
         <li>
-          <a href="<?php echo site_url(); ?>/membership-join/"><i class="fa fa-users" aria-hidden="true"></i> Join us</a>
+          <a href="<?php echo site_url(); ?>/join-us/"><i class="fa fa-users" aria-hidden="true"></i> Join us</a>
         </li>
       </ul>
     </div>

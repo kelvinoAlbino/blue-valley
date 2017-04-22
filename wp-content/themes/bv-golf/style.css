@@ -8094,9 +8094,19 @@ table#events-table {
   border-radius: 3px;
   box-shadow: 0 0 4px rgba(0, 0, 0, 0.2); }
   .spotlight .spotlight-item img {
+    width: 100%;
     border: 3px solid #fff;
     border-radius: 3px;
     box-shadow: 0 0 4px rgba(0, 0, 0, 0.4); }
+
+#gap-posts {
+  border-bottom: 1px solid #aaa; }
+  #gap-posts:last-child {
+    border-bottom: 0; }
+  #gap-posts img {
+    border: 3px solid #fff;
+    box-shadow: 0px 0px 5px #aaa;
+    max-width: 300px; }
 
 #top-header {
   background-color: #33b8ff; }
@@ -8169,6 +8179,9 @@ ul.social-icons {
     .call-out p:last-of-type {
       margin: 0 0 25px; }
 
+#main-content .container {
+  padding-top: 0px; }
+
 @media (min-width: 768px) {
   .slanted {
     position: relative; }
@@ -8194,9 +8207,14 @@ ul.social-icons {
       -ms-transform: rotate(3deg) scale(2);
       transform: rotate(3deg) scale(2);
       z-index: 9999; } }
-#main-content .container {
-  padding-top: 0px; }
+@media (min-width: 981px) {
+  #left-area {
+    width: 70%;
+    padding-bottom: 23px; }
 
+  #sidebar {
+    float: left;
+    width: 30%; } }
 footer#main-footer {
   color: #fff; }
   footer#main-footer h3 {
@@ -8218,16 +8236,21 @@ footer #footer-bottom {
     border-top: 1px solid #eee;
     border-bottom: 1px solid #eee;
     padding-top: 10px; }
-  #sidebar .et_pb_widget ul li {
+  #sidebar .et_pb_widget ul li, #sidebar .et_pb_widget_area ul li {
     background-color: #eee;
     padding: 3px 12px !important;
     border-radius: 3px;
     margin: 0 0 10px; }
-    #sidebar .et_pb_widget ul li:hover {
+    #sidebar .et_pb_widget ul li:hover, #sidebar .et_pb_widget_area ul li:hover {
       background-color: #ddd; }
-    #sidebar .et_pb_widget ul li:last-child {
+    #sidebar .et_pb_widget ul li:last-child, #sidebar .et_pb_widget_area ul li:last-child {
       margin: 0; }
-    #sidebar .et_pb_widget ul li a {
+    #sidebar .et_pb_widget ul li a, #sidebar .et_pb_widget_area ul li a {
       color: #33b8ff; }
+
+.textwidget .call-out h2 {
+  margin: 0 0 10px; }
+.textwidget .call-out a {
+  color: #fff; }
 
 
