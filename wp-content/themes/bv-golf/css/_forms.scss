@@ -1,6 +1,23 @@
 #forms {
   form {
     font-weight: 500;
+
+    table {
+      tbody {
+        tr {
+          td {
+            padding: 0;
+          }
+        }
+      }
+    }
+
+    input[type="text"], input[type="email"], input[type="password"] {
+      width: 100%;
+      padding: 6px 8px;
+      border-radius: 3px;
+      margin: 0 0 20px;
+    }
     
     p, div {
       display: inline-block;
@@ -54,6 +71,10 @@
   }
 }
 
+.registration-form {
+  margin: 0 auto;
+}
+
 .membership-form {
   width: 320px;
   padding: 15px 20px 0;
@@ -61,4 +82,20 @@
   border-radius: 5px;
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.25);
   background-color: rgba(0, 0, 0, 0.025);
+}
+
+@media (min-width: $screen-sm) {
+  .registration-form {
+    width: 60%;
+  }
+
+  #forms {
+    form {
+      div { 
+        input[type="submit"] {
+          float: left;
+        }
+      }
+    }
+  }
 }

@@ -8013,6 +8013,13 @@ a {
 
 #forms form {
   font-weight: 500; }
+  #forms form table tbody tr td {
+    padding: 0; }
+  #forms form input[type="text"], #forms form input[type="email"], #forms form input[type="password"] {
+    width: 100%;
+    padding: 6px 8px;
+    border-radius: 3px;
+    margin: 0 0 20px; }
   #forms form p, #forms form div {
     display: inline-block;
     margin: 0;
@@ -8048,6 +8055,9 @@ a {
       #forms form p input[type="submit"]:hover, #forms form div input[type="submit"]:hover {
         background-color: #00a6ff; }
 
+.registration-form {
+  margin: 0 auto; }
+
 .membership-form {
   width: 320px;
   padding: 15px 20px 0;
@@ -8056,6 +8066,12 @@ a {
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.25);
   background-color: rgba(0, 0, 0, 0.025); }
 
+@media (min-width: 768px) {
+  .registration-form {
+    width: 60%; }
+
+  #forms form div input[type="submit"] {
+    float: left; } }
 table#events-table {
   color: gray; }
   table#events-table thead tr th {
@@ -8195,6 +8211,9 @@ ul.social-icons {
 
 #main-content .container {
   padding-top: 0px; }
+
+#contact ul {
+  list-style: none; }
 
 @media (min-width: 768px) {
   .slanted {
