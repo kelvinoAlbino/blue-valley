@@ -8244,24 +8244,26 @@ footer #footer-bottom {
     footer #footer-bottom .container a {
       color: #33b8ff; }
 
-#sidebar {
-  border: none;
-  margin-top: 20px;
+#et-sidebar {
   width: 100%; }
-  #sidebar h4 {
+
+#sidebar, #et-sidebar {
+  border: none;
+  margin-top: 20px; }
+  #sidebar h4, #et-sidebar h4 {
     border-top: 1px solid #eee;
     border-bottom: 1px solid #eee;
     padding-top: 10px; }
-  #sidebar .et_pb_widget ul li, #sidebar .et_pb_widget_area ul li {
+  #sidebar .et_pb_widget ul li, #sidebar .et_pb_widget_area ul li, #et-sidebar .et_pb_widget ul li, #et-sidebar .et_pb_widget_area ul li {
     background-color: #eee;
     padding: 3px 12px !important;
     border-radius: 3px;
     margin: 0 0 10px; }
-    #sidebar .et_pb_widget ul li:hover, #sidebar .et_pb_widget_area ul li:hover {
+    #sidebar .et_pb_widget ul li:hover, #sidebar .et_pb_widget_area ul li:hover, #et-sidebar .et_pb_widget ul li:hover, #et-sidebar .et_pb_widget_area ul li:hover {
       background-color: #ddd; }
-    #sidebar .et_pb_widget ul li:last-child, #sidebar .et_pb_widget_area ul li:last-child {
+    #sidebar .et_pb_widget ul li:last-child, #sidebar .et_pb_widget_area ul li:last-child, #et-sidebar .et_pb_widget ul li:last-child, #et-sidebar .et_pb_widget_area ul li:last-child {
       margin: 0; }
-    #sidebar .et_pb_widget ul li a, #sidebar .et_pb_widget_area ul li a {
+    #sidebar .et_pb_widget ul li a, #sidebar .et_pb_widget_area ul li a, #et-sidebar .et_pb_widget ul li a, #et-sidebar .et_pb_widget_area ul li a {
       color: #33b8ff; }
 
 .textwidget .call-out h2 {
