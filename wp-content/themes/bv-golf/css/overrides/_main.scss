@@ -43,6 +43,17 @@ ul {
   }
 }
 
+.one_half {
+
+  ul.open-hours {
+    padding: 0;
+    list-style: none;
+    
+      li {
+    }
+  }
+}
+
 .call-out {
   padding: 20px 40px;
   background-color: #eee;

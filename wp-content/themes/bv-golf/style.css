@@ -8198,6 +8198,10 @@ ul.social-icons {
     ul.social-icons li i {
       font-size: 26px; }
 
+.one_half ul.open-hours {
+  padding: 0;
+  list-style: none; }
+
 .call-out {
   padding: 20px 40px;
   background-color: #eee;
