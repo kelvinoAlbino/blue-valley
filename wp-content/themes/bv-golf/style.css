@@ -8125,8 +8125,7 @@ table#events-table {
     margin: 0 15px 0 0;
     border: 3px solid #fff;
     box-shadow: 0 0 4px rgba(0, 0, 0, 0.2);
-    max-width: 300px;
-    float: left; }
+    width: 100%; }
 
 .block-post .column {
   padding: 10px; }
@@ -8142,6 +8141,10 @@ table#events-table {
   margin: 15px auto;
   display: block; }
 
+@media (min-width: 768px) {
+  #gap-posts article img {
+    float: left;
+    width: 300px; } }
 #top-header {
   background-color: #33b8ff; }
   #top-header .top-container {

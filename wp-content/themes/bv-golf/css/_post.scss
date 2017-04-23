@@ -27,8 +27,7 @@
       margin: 0 ($grid-gutter-width / 2) 0 0;
       border: $bvg-border;
       box-shadow: $bvg-box-shadow;
-      max-width: 300px;
-      float: left;
+      width: 100%;
     }
   }
 }
@@ -51,5 +50,17 @@
     box-shadow: $bvg-box-shadow;
     margin: 15px auto;
     display: block;
+  }
+}
+
+
+@media (min-width: $screen-sm){
+  #gap-posts {
+    article {
+      img {
+        float: left;
+        width: 300px;
+      }
+    }
   }
 }
