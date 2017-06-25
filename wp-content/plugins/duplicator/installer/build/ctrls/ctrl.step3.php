@@ -25,6 +25,7 @@ DUPX_DB::setCharset($dbh, $_POST['dbcharset'], $_POST['dbcollate']);
 $_POST['blogname']		= mysqli_real_escape_string($dbh, $_POST['blogname']);
 $_POST['postguid']		= isset($_POST['postguid']) && $_POST['postguid'] == 1 ? 1 : 0;
 $_POST['fullsearch']	= isset($_POST['fullsearch']) && $_POST['fullsearch'] == 1 ? 1 : 0;
+$_POST['urlextended']	= isset($_POST['urlextended']) && $_POST['urlextended'] == 1 ? 1 : 0;
 $_POST['path_old']		= isset($_POST['path_old']) ? trim($_POST['path_old']) : null;
 $_POST['path_new']		= isset($_POST['path_new']) ? trim($_POST['path_new']) : null;
 $_POST['siteurl']		= isset($_POST['siteurl']) ? rtrim(trim($_POST['siteurl']), '/') : null;
@@ -73,8 +74,15 @@ $log .= (isset($_POST['plugins']) && count($_POST['plugins'] > 0))
 DUPX_Log::info($log, 2);
 
 //UPDATE SETTINGS
-$serial_plugin_list = (isset($_POST['plugins']) && count($_POST['plugins'] > 0)) ? @serialize($_POST['plugins']) : '';
-mysqli_query($dbh, "UPDATE `{$GLOBALS['FW_TABLEPREFIX']}options` SET option_value = '{$_POST['blogname']}' WHERE option_name = 'blogname' ");
+$blog_name   = $_POST['blogname'];
+$plugin_list = (isset($_POST['plugins'])) ? $_POST['plugins'] : array();
+// Force Duplicator active so we the security cleanup will be available
+if (!in_array('duplicator/duplicator.php', $plugin_list)) {
+	$plugin_list[] = 'duplicator/duplicator.php';
+}
+$serial_plugin_list	 = @serialize($plugin_list);
+
+mysqli_query($dbh, "UPDATE `{$GLOBALS['FW_TABLEPREFIX']}options` SET option_value = '{$blog_name}' WHERE option_name = 'blogname' ");
 mysqli_query($dbh, "UPDATE `{$GLOBALS['FW_TABLEPREFIX']}options` SET option_value = '{$serial_plugin_list}'  WHERE option_name = 'active_plugins' ");
 
 $log  = "--------------------------------------\n";
@@ -99,6 +107,45 @@ array_push($GLOBALS['REPLACE_LIST'],
 		array('search' => urlencode($_POST['url_old']),  'replace' => urlencode($_POST['url_new'])),
 		array('search' => rtrim(DUPX_U::unsetSafePath($_POST['path_old']), '\\'), 'replace' => rtrim($_POST['path_new'], '/'))
 );
+
+//URL EXTENDED
+if ($_POST['urlextended']) {
+	
+	//RAW '//' 
+	$url_old_raw = str_ireplace(array('http://', 'https://'), '//', $_POST['url_old']);
+	$url_new_raw = str_ireplace(array('http://', 'https://'), '//', $_POST['url_new']);
+	$url_old_raw_json = str_replace('"',  "", json_encode($url_old_raw));
+	$url_new_raw_json = str_replace('"',  "", json_encode($url_new_raw));
+
+	//INVERSE: Apply a search for the inverse of the orginal
+	if (stristr($_POST['url_old'], 'http:')) {
+		//Search for https urls
+		$url_old_diff = str_ireplace('http:', 'https:', $_POST['url_old']);
+		$url_new_diff = str_ireplace('http:', 'https:', $_POST['url_new']);
+		$url_old_diff_json = str_replace('"',  "", json_encode($url_old_diff));
+		$url_new_diff_json = str_replace('"',  "", json_encode($url_new_diff));
+		
+	} else {
+		//Search for http urls
+		$url_old_diff = str_ireplace('https:', 'http:', $_POST['url_old']);
+		$url_new_diff = str_ireplace('https:', 'http:', $_POST['url_new']);
+		$url_old_diff_json = str_replace('"',  "", json_encode($url_old_diff));
+		$url_new_diff_json = str_replace('"',  "", json_encode($url_new_diff));
+	}
+
+	array_push($GLOBALS['REPLACE_LIST'],
+			//RAW
+			array('search' => $url_old_raw,			 	 	 'replace' => $url_new_raw),
+			array('search' => $url_old_raw_json,			 'replace' => $url_new_raw_json),
+			array('search' => urlencode($url_old_raw), 		 'replace' => urlencode($url_new_raw)),
+
+			//INVERSE
+			array('search' => $url_old_diff,			 	 'replace' => $url_new_diff),
+			array('search' => $url_old_diff_json,			 'replace' => $url_new_diff_json),
+			array('search' => urlencode($url_old_diff),  	 'replace' => urlencode($url_new_diff))
+	);
+}
+
 
 //Remove trailing slashes
 function _dupx_array_rtrim(&$value) {
@@ -143,7 +190,7 @@ DUPX_Log::info("====================================\n");
 DUPX_WPConfig::updateStandard();
 $config_file = DUPX_WPConfig::updateExtended();
 DUPX_Log::info("UPDATED WP-CONFIG: {$root_path}/wp-config.php' (if present)");
-DUPX_ServerConfig::setup();
+DUPX_ServerConfig::setup($dbh);
 
 
 

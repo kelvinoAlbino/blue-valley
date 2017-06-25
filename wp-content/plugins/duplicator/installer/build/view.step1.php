@@ -2,9 +2,46 @@
 //VIEW: STEP 1- INPUT
 
 //ARCHIVE FILE
-$arcCheck	= (file_exists($GLOBALS['ARCHIVE_PATH']))	? 'Pass' : 'Fail';
+$arcStatus	= (file_exists($GLOBALS['ARCHIVE_PATH']))	? 'Pass' : 'Fail';
+$arcFormat  = ($arcStatus == 'Pass') ? 'Pass' : 'StatusFailed';
 $arcSize    = @filesize($GLOBALS['ARCHIVE_PATH']);
 $arcSize    = is_numeric($arcSize) ? $arcSize : 0;
+$zip_archive_enabled = class_exists('ZipArchive') ? 'Enabled' : 'Not Enabled';
+
+//ARCHIVE FORMAT
+if ($arcStatus) {
+	if (class_exists('ZipArchive')){
+		$zip = new ZipArchive();
+		if($zip->open($GLOBALS['ARCHIVE_PATH']) === TRUE ) {
+
+			$arcFilePath = basename($GLOBALS['ARCHIVE_PATH']);
+			$arcFilePath = substr($arcFilePath, 0, strrpos($arcFilePath, "."));
+			$badFiles  = array('__MACOSX', $arcFilePath);
+			$goodFiles = array('database.sql', 'installer-backup.php');
+			$goodFilesFound = true;
+			$badFilesFound  = false;
+
+			foreach ($badFiles as $val) {
+				if (is_numeric($zip->locateName("{$val}/"))) {
+					$badFilesFound = true;
+					break;
+				}
+			}
+
+			foreach ($goodFiles as $val) {
+				if ($zip->locateName($val) !== true) {
+					$goodFilesFound = false;
+				}
+			}
+
+			$arcFormat = ($goodFilesFound == false && $badFilesFound == true) ? 'Fail' : 'Pass';
+		}
+	} else {
+		$arcFormat = 'NoZipArchive';
+	}
+}
+
+$all_arc = ($arcStatus == 'Pass' && $arcFormat != 'Fail') ? 'Pass' : 'Fail';
 
 //REQUIRMENTS
 $req      	= array();
@@ -24,18 +61,20 @@ $datetime2		= date("Y-m-d H:i:s");
 $fulldays		= round(abs(strtotime($datetime1) - strtotime($datetime2))/86400);
 $root_path		= DUPX_U::setSafePath($GLOBALS['CURRENT_ROOT_PATH']);
 $wpconf_path	= "{$root_path}/wp-config.php";
-$max_time_zero  = set_time_limit(0);
+$max_time_zero  = @set_time_limit(0);
 $max_time_size  = 314572800;  //300MB
 $max_time_ini   = ini_get('max_execution_time');
 $max_time_warn  = (is_numeric($max_time_ini) && $max_time_ini < 31  && $max_time_ini > 0) && $arcSize > $max_time_size;
 
 
 $notice		    = array();
-$notice['01']   = ! file_exists($wpconf_path)	? 'Good' : 'Warn';
-$notice['02']   = $scancount <= 40 ? 'Good' : 'Warn';
+if (!$GLOBALS['FW_ARCHIVE_ONLYDB']) {
+	$notice['01']   = ! file_exists($wpconf_path)	? 'Good' : 'Warn';
+	$notice['02']   = $scancount <= 35 ? 'Good' : 'Warn';
+}
 $notice['03']	= $fulldays <= 180 ? 'Good' : 'Warn';
 $notice['04']	= 'Good'; //Place-holder for future check
-$notice['05']	= 'Good'; //Place-holder for future check $GLOBALS['FW_VERSION_OS'] == PHP_OS ? 'Good' : 'Warn';
+$notice['05']	= 'Good'; //Place-holder for future check 
 $notice['06']	= empty($openbase)	 ? 'Good' : 'Warn';
 $notice['07']	= ! $max_time_warn	 ? 'Good' : 'Warn';
 $all_notice  	= in_array('Warn', $notice) ? 'Warn' : 'Good';
@@ -54,26 +93,49 @@ $agree_msg    = "To enable this button the checkbox above under the 'Terms & Not
 <input type="hidden" name="archive_name"  value="<?php echo $GLOBALS['FW_PACKAGE_NAME'] ?>" />
 
 <div class="hdr-main">
-    Step <span class="step">1</span> of 4: Extract Archive
+    Step <span class="step">1</span> of 4: Deployment
 </div>
 <br/>
 	
 
 <!-- ====================================
-ARCHIVE FILE
+ARCHIVE
 ==================================== -->
-<div class="hdr-sub1">
-    <a id="s1-area-archive-file-link" data-type="toggle" data-target="#s1-area-archive-file"><i class="dupx-plus-square"></i> Archive File</a>
-	<div class="<?php echo ($arcCheck == 'Pass') ? 'status-badge-pass' : 'status-badge-fail'; ?>" style="float:right">
-		<?php echo ($arcCheck == 'Pass') ? 'Pass' : 'Fail'; ?>
+<div class="hdr-sub1" id="s1-area-archive-file-link" data-type="toggle" data-target="#s1-area-archive-file">
+    <a href="javascript:void(0)"><i class="dupx-plus-square"></i> Archive</a>
+	<div class="<?php echo ($all_arc == 'Pass') ? 'status-badge-pass' : 'status-badge-fail'; ?>" style="float:right">
+		<?php echo ($all_arc == 'Pass') ? 'Pass' : 'Fail'; ?>
 	</div>
 </div>
 <div id="s1-area-archive-file" style="display:none">
 
     <table class="s1-archive-local">
+		<tr>
+			<td colspan="2"><div class="hdr-sub3">Site Details</div></td>
+		</tr>
+		 <tr>
+            <td>Site:</td>
+            <td><?php echo $GLOBALS['FW_BLOGNAME'];?> </td>
+        </tr>
+        <tr>
+            <td>Notes:</td>
+            <td><?php echo strlen($GLOBALS['FW_PACKAGE_NOTES']) ? "{$GLOBALS['FW_PACKAGE_NOTES']}" : " - no notes - ";?></td>
+        </tr>
+		<?php if ($GLOBALS['FW_ARCHIVE_ONLYDB']) :?>
+		<tr>
+			<td>Mode:</td>
+			<td>Archive only database was enabled during package package creation.</td>
+		</tr>
+		<?php endif; ?>
+	</table>
+
+	<table class="s1-archive-local">
+		<tr>
+			<td colspan="2"><div class="hdr-sub3">File Details</div></td>
+		</tr>
         <tr>
             <td>Size:</td>
-            <td><?php echo DUPX_U::readableByteSize($arcSize); ;?> </td>
+            <td><?php echo DUPX_U::readableByteSize($arcSize); ?> </td>
         </tr>
         <tr>
             <td>Name:</td>
@@ -83,66 +145,98 @@ ARCHIVE FILE
             <td>Path:</td>
             <td><?php echo "{$GLOBALS['CURRENT_ROOT_PATH']}";?> </td>
         </tr>
-        <tr>
-            <td>Notes:</td>
-            <td><?php echo strlen($GLOBALS['FW_PACKAGE_NOTES']) ? "{$GLOBALS['FW_PACKAGE_NOTES']}" : " - no notes - ";?></td>
-        </tr>
+		<tr>
+			<td>Status:</td>
+			<td>
+				<?php if ($arcStatus != 'Fail') : ?>
+					<span class="dupx-pass">File Found</span>
+				<?php else : ?>
+					<div class="s1-archive-failed-msg">
+						<b class="dupx-fail">Archive File Not Found!</b><br/>
+						The archive file name below must be the <u>exact</u> name of the archive file placed in the deployment path (character for character).
+						If the file does not have the same name then rename it to the name above.
+						<br/><br/>
+
+						When downloading the package files make sure both files are from the same package line in the packages view.  The archive file also
+						must be completely downloaded to the server before starting the install.  The following zip files were found at the deployment path:
+						<?php
+							//DETECT ARCHIVE FILES
+							$zip_files = DUPX_Server::getZipFiles();
+							$zip_count = count($zip_files);
+
+							if ($zip_count >= 1) {
+								echo "<ol style='padding:10px 20px 0 20px; font-style:italic'>";
+								foreach($zip_files as $file) {
+									echo "<li> '{$file}'</li>";
+								}
+								echo "</ol>";
+							} else {
+								echo  "<br/><br/> <i>- No zip files found -</i>";
+							}
+						?>
+					</div>
+				<?php endif; ?>
+			</td>
+		</tr>
+		<tr>
+			<td>Format:</td>
+			<td>
+				<?php if ($arcFormat == 'Pass') : ?>
+					<span class="dupx-pass">Good structure</span>
+				<?php elseif ($arcFormat == 'StatusFailed') : ?>
+					<span class="dupx-fail">Unable to validate format</span><br/>
+				<?php elseif ($arcFormat == 'NoZipArchive') : ?>
+					<div class="s1-archive-failed-msg">
+						The PHP extraction library <a href="" target="_help">ZipArchive</a> was not found on this server.  There are a few options:
+						<ol>
+							<li>Contact your host to enable the this PHP library. <a href="" target="_help">[more info]</a></li>
+							<li>Enable 'Manual package extraction' in the options menu and <a href="" target="_help">Manually extract the archive</a></li>
+						</ol>
+					</div>
+				<?php else : ?>
+					<div class="s1-archive-failed-msg">
+						<b class="dupx-fail">Invalid Archive Format Detected!</b><br/>
+						The archive files contents must be laid out in a specific format.  If the format has been changed the install process will error out.
+						<br/><br/>
+
+						This scenario is rare but can happen on some systems during the download and upload process of the zip without a user being aware of
+						the issue. Please check the contents of the zip archive and be sure its contents match the layout of your site.
+						<br/><br/>
+
+						Files such as database.sql and wp-config.php should be at the root of the archive.  For more details see the FAQ article
+						<a href="https://snapcreek.com/duplicator/docs/faqs-tech/#faq-installer-020-q" target="_help">The archive format is changing on my Mac what might be the problem?</a>
+					</div>
+				<?php endif; ?>
+			</td>
+		</tr>
     </table>
-
-    <?php if ($arcCheck == 'Fail') : ?>
-        <div class="s1-archive-failed-msg">
-            <b class="dupx-fail">Archive File Not Found!</b><br/>
-            The archive file name above must be the <u>exact</u> name of the archive file placed in the deployment path (character for character).
-            If the file does not have the same name then rename it to the name above.
-            <br/><br/>
-
-            When downloading the package files make sure both files are from the same package line in the packages view.  The archive file also
-            must be completely downloaded to the server before trying to run step 1.  The following zip files were found at the deployment path:<br/>
-            <?php
-                //DETECT ARCHIVE FILES
-                $zip_files = DUPX_Server::getZipFiles();
-                $zip_count = count($zip_files);
-
-                if ($zip_count >= 1) {
-                    echo "<ol>";
-                    foreach($zip_files as $file) {
-                        echo "<li> {$file}</li>";
-                    }
-                    echo "</ol>";
-                } else {
-                    echo  " - No zip files found -";
-                }
-            ?>
-        </div>
-    <?php endif; ?>
 
 </div>
 <br/><br/>
 
 
 <!-- ====================================
-SYSTEM CHECKS
+VALIDATION
 ==================================== -->
-<div class="hdr-sub1">
-	<a id="s1-area-sys-setup-link" data-type="toggle" data-target="#s1-area-sys-setup"><i class="dupx-plus-square"></i> System Checks</a>
+<div class="hdr-sub1" id="s1-area-sys-setup-link" data-type="toggle" data-target="#s1-area-sys-setup">
+	<a href="javascript:void(0)"><i class="dupx-plus-square"></i> Validation</a>
 	<div class="<?php echo ($req_success) ? 'status-badge-pass' : 'status-badge-fail'; ?>" style="float:right">
 		<?php echo ($req_success) ? 'Pass' : 'Fail'; ?>
 	</div>
 </div>
 <div id="s1-area-sys-setup" style="display:none">
+	<div class='info-top'>The system validation checks help to make sure the system is ready for install.</div>
 
     <!-- *** REQUIREMENTS ***  -->
-	<div class="hdr-sub2">
-		<table class="s1-checks-area">
-			<tr>
-				<td class="title">Requirements</td>
-				<td class="toggle"><a href="javascript:void(0)" onclick="DUPX.toggleAll('#s1-reqs-all')">[toggle]</a></td>
-			</tr>
-		</table>
-	</div>
-
 	<div class="s1-reqs" id="s1-reqs-all">
-		<div class="notice">All requirements must pass to start deployment</div>
+		<div class="header">
+			<table class="s1-checks-area">
+				<tr>
+					<td class="title">Requirements <small>(must pass)</small></td>
+					<td class="toggle"><a href="javascript:void(0)" onclick="DUPX.toggleAll('#s1-reqs-all')">[toggle]</a></td>
+				</tr>
+			</table>
+		</div>
 
 		<!-- REQ 1 -->
 		<div class="status <?php echo strtolower($req['01']); ?>"><?php echo $req['01']; ?></div>
@@ -197,36 +291,52 @@ SYSTEM CHECKS
 
 
 	<!-- *** NOTICES ***  -->
-	<div class="hdr-sub2">
-		<table class="s1-checks-area">
-			<tr>
-				<td class="title">Notices</td>
-				<td class="toggle"><a href="javascript:void(0)" onclick="DUPX.toggleAll('#s1-notice-all')">[toggle]</a></td>
-			</tr>
-		</table>
-	</div>
 	<div class="s1-reqs" id="s1-notice-all">
-		<div class="notice">Notices are not required to start deployment</div>
-
-		<!-- NOTICE 1 -->
-		<div class="status <?php echo ($notice['01'] == 'Good') ? 'pass' : 'fail' ?>"><?php echo $notice['01']; ?></div>
-		<div class="title" data-type="toggle" data-target="#s1-notice01">+ Configuration File</div>
-		<div class="info" id="s1-notice01">
-			Duplicator works best by placing the installer and archive files into an empty directory.  Typically, if a wp-config.php file is found in the extraction
-			directory it may indicate that your trying to install over an existing WordPress site which can lead to un-intended results.  If this is not the case, then
-			just ignore this notice, but be aware that you will have to remove the wp-config.php file later on in the deployment process.
+		<div class="header">
+			<table class="s1-checks-area">
+				<tr>
+					<td class="title">Notices <small>(optional)</small></td>
+					<td class="toggle"><a href="javascript:void(0)" onclick="DUPX.toggleAll('#s1-notice-all')">[toggle]</a></td>
+				</tr>
+			</table>
 		</div>
 
-		<!-- NOTICE 2 -->
-		<div class="status <?php echo ($notice['02'] == 'Good') ? 'pass' : 'fail' ?>"><?php echo $notice['02']; ?></div>
-		<div class="title" data-type="toggle" data-target="#s1-notice02">+ Directory Setup</div>
-		<div class="info" id="s1-notice02">
-			<b>Deployment Path:</b> <i><?php echo "{$GLOBALS['CURRENT_ROOT_PATH']}"; ?></i>
-			<br/><br/>
-			There are currently <?php echo "<b>[{$scancount}]</b>";?>  items in the deployment path. These items will be overwritten if they also exist
-			inside the archive file.  The notice is to prevent overwriting an existing site or trying to install on-top of one which
-			can have un-intended results. <i>This notice shows if it detects more than 40 items.</i>
-		</div>
+		<?php if (!$GLOBALS['FW_ARCHIVE_ONLYDB']) :?>
+
+			<!-- NOTICE 1 -->
+			<div class="status <?php echo ($notice['01'] == 'Good') ? 'pass' : 'fail' ?>"><?php echo $notice['01']; ?></div>
+			<div class="title" data-type="toggle" data-target="#s1-notice01">+ Configuration File</div>
+			<div class="info" id="s1-notice01">
+				Duplicator works best by placing the installer and archive files into an empty directory.  If a wp-config.php file is found in the extraction
+				directory it might indicate that a pre-existing WordPress site exists which can lead to a bad install.
+				<br/><br/>
+				<b>Options:</b>
+				<ul style="margin-bottom: 0">
+					<li>If the archive was already manually extracted then <a href="javascript:void(0)" onclick="DUPX.getManaualArchiveOpt()">[Enable Manual Archive Extraction]</a></li>
+					<li>If the wp-config file is not needed then remove it.</li>
+				</ul>
+			</div>
+
+			<!-- NOTICE 2 -->
+			<div class="status <?php echo ($notice['02'] == 'Good') ? 'pass' : 'fail' ?>"><?php echo $notice['02']; ?></div>
+			<div class="title" data-type="toggle" data-target="#s1-notice02">+ Directory Setup</div>
+			<div class="info" id="s1-notice02">
+				<b>Deployment Path:</b> <i><?php echo "{$GLOBALS['CURRENT_ROOT_PATH']}"; ?></i>
+				<br/><br/>
+				There are currently <?php echo "<b>[{$scancount}]</b>";?>  items in the deployment path. These items will be overwritten if they also exist
+				inside the archive file.  The notice is to prevent overwriting an existing site or trying to install on-top of one which
+				can have un-intended results. <i>This notice shows if it detects more than 40 items.</i>
+
+				<br/><br/>
+				<b>Options:</b>
+				<ul style="margin-bottom: 0">
+					<li>If the archive was already manually extracted then <a href="javascript:void(0)" onclick="DUPX.getManaualArchiveOpt()">[Enable Manual Archive Extraction]</a></li>
+					<li>If the files/directories are not the same as those in the archive then this notice can be ignored.</li>
+					<li>Remove the files if they are not needed and refresh this page.</li>
+				</ul>
+			</div>
+
+		<?php endif; ?>
 
 		<!-- NOTICE 3 -->
 		<div class="status <?php echo ($notice['03'] == 'Good') ? 'pass' : 'fail' ?>"><?php echo $notice['03']; ?></div>
@@ -300,23 +410,36 @@ SYSTEM CHECKS
 	
 
 <!-- ====================================
-ADVANCED OPTIONS
+OPTIONS
 ==================================== -->
-<div class="hdr-sub1">
-	<a data-type="toggle" data-target="#s1-area-adv-opts"><i class="dupx-plus-square"></i> Advanced Options</a>
+<div class="hdr-sub1" data-type="toggle" data-target="#s1-area-adv-opts">
+	<a href="javascript:void(0)"><i class="dupx-plus-square"></i> Options</a>
 </div>
 <div id="s1-area-adv-opts" style="display:none">
 	<div class="help-target"><a href="?help#help-s1" target="_blank">[help]</a></div>
-  
+	<br/>
+	<div class="hdr-sub3">Advanced</div>
 	<table class="dupx-opts dupx-advopts">
 		<tr>
 			<td>Extraction:</td>
 			<td>
-				<input type="checkbox" name="archive_manual" id="archive_manual" value="1" /> <label for="archive_manual">Manual package extraction</label><br/>
+
+				<select id="archive_engine" name="archive_engine" size="2">
+					<option value="manual">Manual Archive Extraction</option>
+					<?php
+					//ZIP-ARCHIVE
+					echo (! $zip_archive_enabled)
+						? '<option disabled="true">PHP ZipArchive (not detected on server)</option>'
+						: '<option value="ziparchive" selected="true">PHP ZipArchive</option>';
+					?>
+				</select>
 			</td>
 		</tr>
+	</table>
+
+	<table class="dupx-opts dupx-advopts">
 		<tr>
-			<td>File Timestamp:</td>
+			<td>File Times:</td>
 			<td>
 				<input type="radio" name="archive_filetime" id="archive_filetime_now" value="current" checked="checked" /> <label class="radio" for="archive_filetime_now" title='Set the files current date time to now'>Current</label>
 				<input type="radio" name="archive_filetime" id="archive_filetime_orginal" value="original" /> <label class="radio" for="archive_filetime_orginal" title="Keep the files date time the same">Original</label>
@@ -349,8 +472,6 @@ ADVANCED OPTIONS
 					</td>
 				</tr>
 			</table>
-            
-           
         </div>
      </div><br/>
 
@@ -358,10 +479,10 @@ ADVANCED OPTIONS
 <br/><br/>
 
 <!-- ====================================
-TERMS & NOTICES
+NOTICES
 ==================================== -->
-<div class="hdr-sub1">
-	<a data-type="toggle" data-target="#s1-area-warnings"><i class="dupx-plus-square"></i> Terms &amp; Notices</a>
+<div class="hdr-sub1" data-type="toggle" data-target="#s1-area-warnings">
+	<a href="javascript:void(0)"><i class="dupx-plus-square"></i> Notices</a>
 </div>
 
 <div id="s1-area-warnings" style="display:none">
@@ -428,10 +549,10 @@ TERMS & NOTICES
 </div>
 
 
-<?php if (! $req_success  ||  $arcCheck == 'Fail') :?>
+<?php if (! $req_success  ||  $all_arc == 'Fail') :?>
 	<div class="s1-err-msg">
 		<i>
-			This installation will not be able to proceed until the archive file and system requirements pass. Please adjust your servers settings or contact your
+			This installation will not be able to proceed until the 'Archive' and 'Validation' sections pass. Please adjust your servers settings or contact your
 			server administrator, hosting provider or visit the resources below for additional help.
 		</i>
 		<div style="padding:10px">
@@ -443,7 +564,7 @@ TERMS & NOTICES
     <br/><br/><br/>
     <br/><br/><br/>
     <div class="dupx-footer-buttons">
-        <input id="s1-deploy-btn" type="button" class="default-btn" value=" Next " onclick="DUPX.runExtraction()" title="<?php echo $agree_msg; ?>" />
+        <button id="s1-deploy-btn" type="button" class="default-btn" onclick="DUPX.runExtraction()" title="<?php echo $agree_msg; ?>"> Next </button>
     </div>
 <?php endif; ?>
 
@@ -457,9 +578,9 @@ Auto Posts to view.step2.php
 ========================================= -->
 <form id='s1-result-form' method="post" class="content-form" style="display:none">
 
-	 <div class="dupx-logfile-link"><a href="installer-log.txt" target="_blank">installer-log.txt</a></div>
+	 <div class="dupx-logfile-link"><a href="installer-log.txt" target="install_log">installer-log.txt</a></div>
 	<div class="hdr-main">
-        Step <span class="step">1</span> of 4: Extract Archive
+        Step <span class="step">1</span> of 4: Deployment
 	</div>
 
 	<!--  POST PARAMS -->
@@ -475,7 +596,7 @@ Auto Posts to view.step2.php
 	<!--  PROGRESS BAR -->
 	<div id="progress-area">
 	    <div style="width:500px; margin:auto">
-		<h3>Extracting Archive Files Please Wait...</h3>
+		<h3>Running Deployment Processes Please Wait...</h3>
 		<div id="progress-bar"></div>
 		<i>This may take several minutes</i>
 	    </div>
@@ -495,6 +616,14 @@ Auto Posts to view.step2.php
 </form>
 
 <script>
+    DUPX.getManaualArchiveOpt = function ()
+    {
+        $("html, body").animate({scrollTop: $(document).height()}, 1500);
+        $("a[data-target='#s1-area-adv-opts']").find('i').removeClass('dupx-plus-square').addClass('dupx-minus-square');
+        $('#s1-area-adv-opts').show(1000);
+        $('select#archive_engine').val('manual').focus();
+    };
+
 	/** Performs Ajax post to extract files and create db
 	 * Timeout (10000000 = 166 minutes) */
 	DUPX.runExtraction = function()
@@ -535,7 +664,7 @@ Auto Posts to view.step2.php
 					status += "<b>Status:</b> "			+ xhr.statusText	+ "<br/>";
 					status += "<b>Response:</b> "		+ xhr.responseText  + "";
 					status += "<hr/><b>Additional Troubleshooting Tips:</b><br/>";
-					status += "- Check the <a href='installer-log.txt' target='_blank'>installer-log.txt</a> file for warnings or errors.<br/>";
+					status += "- Check the <a href='installer-log.txt' target='install_log'>installer-log.txt</a> file for warnings or errors.<br/>";
 					status += "- Check the web server and PHP error logs. <br/>";
 					status += "- For timeout issues visit the <a href='https://snapcreek.com/duplicator/docs/faqs-tech/#faq-trouble-100-q' target='_blank'>Timeout FAQ Section</a><br/>";
 				$('#ajaxerr-data').html(status);
@@ -569,7 +698,7 @@ Auto Posts to view.step2.php
     {
 		DUPX.acceptWarning();
         $("*[data-type='toggle']").click(DUPX.toggleClick);
-        <?php echo ($arcCheck == 'Fail') 	? "$('#s1-area-archive-file-link').trigger('click');" 	: ""; ?>
+        <?php echo ($all_arc == 'Fail') 	? "$('#s1-area-archive-file-link').trigger('click');" 	: ""; ?>
 		<?php echo (! $all_success)         ? "$('#s1-area-sys-setup-link').trigger('click');"      : ""; ?>
 	})
 </script>

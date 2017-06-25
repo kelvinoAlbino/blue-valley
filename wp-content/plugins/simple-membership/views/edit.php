@@ -3,9 +3,11 @@ $auth = SwpmAuth::get_instance();
 $user_data = (array) $auth->userData;
 $user_data['membership_level_alias'] = $auth->get('alias');
 extract($user_data, EXTR_SKIP);
+//The admin ajax causes an issue with the JS validation if done on form submission. The edit profile doesn't need JS validation on email. There is PHP validation which will catch any email error.
+//SimpleWpMembership::enqueue_validation_scripts(array('ajaxEmailCall' => array('extraData'=>'&action=swpm_validate_email&member_id='.SwpmAuth::get_instance()->get('member_id'))));
 ?>
 <div class="swpm-edit-profile-form">
-    <form id="swpm-editprofile-form" name="swpm-editprofile-form" method="post" action="">
+    <form id="swpm-editprofile-form" name="swpm-editprofile-form" method="post" action="" class="swpm-validate-form">
         <?php wp_nonce_field('swpm_profile_edit_nonce_action', 'swpm_profile_edit_nonce_val') ?>
         <table>
             <tr class="swpm-profile-username-row">
@@ -18,11 +20,11 @@ extract($user_data, EXTR_SKIP);
             </tr>
             <tr class="swpm-profile-password-row">
                 <td><label for="password"><?php echo SwpmUtils::_('Password'); ?></label></td>
-                <td><input type="text" id="password" value="" size="50" name="password" placeholder="<?php echo SwpmUtils::_('Leave empty to keep the current password'); ?>" /></td>
+                <td><input type="password" id="password" value="" size="50" name="password" placeholder="<?php echo SwpmUtils::_('Leave empty to keep the current password'); ?>" /></td>
             </tr>
             <tr class="swpm-profile-password-retype-row">
                 <td><label for="password_re"><?php echo SwpmUtils::_('Repeat Password'); ?></label></td>
-                <td><input type="text" id="password_re" value="" size="50" name="password_re" placeholder="<?php echo SwpmUtils::_('Leave empty to keep the current password'); ?>" /></td>
+                <td><input type="password" id="password_re" value="" size="50" name="password_re" placeholder="<?php echo SwpmUtils::_('Leave empty to keep the current password'); ?>" /></td>
             </tr>
             <tr class="swpm-profile-firstname-row">
                 <td><label for="first_name"><?php echo SwpmUtils::_('First Name'); ?></label></td>
@@ -72,10 +74,3 @@ extract($user_data, EXTR_SKIP);
 
     </form>
 </div>
-<script>
-    jQuery(document).ready(function($) {
-        $.validationEngineLanguage.allRules['ajaxEmailCall']['url'] = '<?php echo admin_url('admin-ajax.php'); ?>';
-        $.validationEngineLanguage.allRules['ajaxEmailCall']['extraData'] = '&action=swpm_validate_email&member_id=<?php echo SwpmAuth::get_instance()->get('member_id'); ?>';
-        $("#swpm-editprofile-form").validationEngine('attach');
-    });
-</script>

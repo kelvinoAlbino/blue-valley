@@ -338,6 +338,9 @@ class SimpleWpMembership {
             echo '</ul>';
         }
         echo "</div>";
+        if (isset($message['pass_reset_sent'])) {
+            $succeeded = true;
+        }
         return $succeeded;
     }
 
@@ -525,9 +528,56 @@ class SimpleWpMembership {
     private function common_library() {
         wp_enqueue_script('jquery');
         wp_enqueue_style('swpm.common', SIMPLE_WP_MEMBERSHIP_URL . '/css/swpm.common.css');
-        wp_enqueue_style('validationEngine.jquery', SIMPLE_WP_MEMBERSHIP_URL . '/css/validationEngine.jquery.css');
-        wp_enqueue_script('jquery.validationEngine-en', SIMPLE_WP_MEMBERSHIP_URL . '/js/jquery.validationEngine-en.js', array('jquery'));
-        wp_enqueue_script('jquery.validationEngine', SIMPLE_WP_MEMBERSHIP_URL . '/js/jquery.validationEngine.js', array('jquery'));
+
+        //In order to not clog WP with scripts and styles we're only using with forms, let's just register those for now
+        //Scripts will be queued when forms are actually displayed
+        wp_register_style('validationEngine.jquery', SIMPLE_WP_MEMBERSHIP_URL . '/css/validationEngine.jquery.css');
+        wp_register_script('jquery.validationEngine', SIMPLE_WP_MEMBERSHIP_URL . '/js/jquery.validationEngine.js', array('jquery'));
+        wp_register_script('jquery.validationEngine-en', SIMPLE_WP_MEMBERSHIP_URL . '/js/jquery.validationEngine-en.js', array('jquery'));
+        wp_register_script('swpm.validationEngine-localization', SIMPLE_WP_MEMBERSHIP_URL . '/js/swpm.validationEngine-localization.js', array('jquery'));
+    }
+
+    public static function enqueue_validation_scripts($add_params = false) {
+        //Localization for jquery.validationEngine
+        //This array will be merged with $.validationEngineLanguage.allRules object from jquery.validationEngine-en.js file
+        $loc_data = array(
+            'ajaxUserCall' => array(
+                'url' => admin_url('admin-ajax.php'),
+                'alertTextLoad' => '* ' . SwpmUtils::_('Validating, please wait'),
+            ),
+            'ajaxEmailCall' => array(
+                'url' => admin_url('admin-ajax.php'),
+                'alertTextLoad' => '* ' . SwpmUtils::_('Validating, please wait'),
+            ),
+            'email' => array(
+                'alertText' => '* ' . SwpmUtils::_('Invalid email address'),
+            ),
+            'required' => array(
+                'alertText' => '* ' . SwpmUtils::_('This field is required'),
+            ),
+            'SWPMUserName' => array(
+                'alertText' => '* ' . SwpmUtils::_('Invalid Username'),
+            ),
+            'minSize' => array(
+                'alertText' => '* ' . SwpmUtils::_('Minimum '),
+                'alertText2' => SwpmUtils::_(' characters required'),
+            ),
+            'noapostrophe' => array(
+                'alertText' => '* ' . SwpmUtils::_('Apostrophe character is not allowed'),
+            ),
+        );
+
+        if ($add_params !== false) {
+            // Additional parameters should be added to the array, replacing existing ones
+            $loc_data = array_replace_recursive($add_params, $loc_data);
+        }
+
+        wp_localize_script('swpm.validationEngine-localization', 'swpm_validationEngine_localization', $loc_data);
+
+        wp_enqueue_style('validationEngine.jquery');
+        wp_enqueue_script('jquery.validationEngine');
+        wp_enqueue_script('jquery.validationEngine-en');
+        wp_enqueue_script('swpm.validationEngine-localization');
     }
 
     public function registration_form($atts) {
