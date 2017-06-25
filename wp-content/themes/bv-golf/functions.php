@@ -11,4 +11,14 @@ function my_theme_enqueue_styles() {
     );
 }
 add_action( 'wp_enqueue_scripts', 'my_theme_enqueue_styles' );
+
+
+function my_et_builder_post_types( $post_types ) {
+    $post_types[] = 'am_event';
+    //$post_types[] = 'ANOTHER_CPT_HERE';
+     
+    return $post_types;
+}
+add_filter( 'et_builder_post_types', 'my_et_builder_post_types' );
+
 ?>

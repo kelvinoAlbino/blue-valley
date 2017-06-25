@@ -32,14 +32,14 @@ get_header();
                     // WP_Query arguments
                     $args = array(
                         'post_type' => 'am_event',
-                        'post_status' => 'publish',
-                        'orderby' => 'meta_value',
-                        'meta_key' => 'am_startdate',
-                        'order' => 'ASC',
+                        //'post_status' => 'publish',
+                        //'orderby' => 'meta_value',
+                        //'meta_key' => 'am_startdate',
+                        'order' => 'date',
                         'meta_query' => array(
                             array(
                             'key' => 'am_enddate',
-                            'value' => date('Y-m-d H:i:s', time()), //don't change date format here!
+                            //'value' => date('Y-m-d H:i:s', time()), //don't change date format here!
                             'compare' => ">",
                             ),
                         ),
